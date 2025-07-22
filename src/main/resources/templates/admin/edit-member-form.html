@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>회원 정보 수정</title>
+</head>
+<body>
+
+<h1>회원 정보 수정</h1>
+
+<form th:action="@{/admin/members/edit/{id}(id=${memberId})}" method="post" th:object="${member}">
+    <p>
+        <label for="email">이메일:</label><br>
+        <input type="email" id="email" th:field="*{email}" size="30">
+    <div style="color: red;" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+    </p>
+
+    <p>
+        <label for="password">비밀번호:</label><br>
+        <input type="password" id="password" th:field="*{password}" placeholder="변경할 경우에만 입력하세요">
+    <div style="color: red;" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
+    </p>
+
+    <p>
+        <label for="role">역할:</label><br>
+        <select id="role" th:field="*{role}">
+            <option value="USER">USER</option>
+            <option value="ADMIN">ADMIN</option>
+        </select>
+    </p>
+
+    <button type="submit">수정 완료</button>
+    <a href="/admin/members">취소</a>
+</form>
+
+</body>
+</html>
