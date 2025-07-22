@@ -59,11 +59,11 @@ public class ProductTest {
     @Test
     @DisplayName("옵션이 하나만 남았을 때 삭제를 시도하면 예외가 발생")
     void removeOption_Fail_LastOption() {
-        product.removeOptionById(1L);
+        product.removeOptionByOptionId(1L);
 
         assertAll(
                 () -> assertThat(product.getOptions()).hasSize(1),
-                () -> assertThatThrownBy(() -> product.removeOptionById(2L))
+                () -> assertThatThrownBy(() -> product.removeOptionByOptionId(2L))
                         .isInstanceOf(IllegalArgumentException.class)
                         .hasMessage("상품의 옵션이 한 개이기 때문에 삭제가 불가능합니다.")
         );
