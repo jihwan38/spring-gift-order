@@ -1,0 +1,2 @@
+kakao.client-id = 카카오_REST_API
+kakao.redirect-uri = http://localhost:8080
