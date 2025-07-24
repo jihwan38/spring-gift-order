@@ -2,7 +2,9 @@ package gift.kakao.service;
 
 
 import gift.kakao.dto.KakaoTokenResponseDto;
+import gift.kakao.dto.KakaoUserInfoResponseDto;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
@@ -41,13 +43,31 @@ public class KakaoLoginService {
                 .body(params)
                 .retrieve()
                 .onStatus(HttpStatusCode::is4xxClientError, ((request, response) -> {
-                    throw new RuntimeException("클라이언트 오류가 발생했습니다.");
+                    throw new RuntimeException("인가코드를 사용한 조회에 실패했습니다." + response.getStatusCode());
                 }))
                 .onStatus(HttpStatusCode::is5xxServerError, ((request, response) -> {
-                    throw new RuntimeException("서버 오류가 발생했습니다.");
+                    throw new RuntimeException("카카오 서버에 문제가 생겼습니다." + response.getStatusCode());
                 }))
                 .body(KakaoTokenResponseDto.class);
 
+        if (kakaoTokenResponseDto == null || kakaoTokenResponseDto.accessToken() == null) {
+            throw new RuntimeException("카카오 토큰 응답이 비어있거나 액세스 토큰이 없습니다.");
+        }
+
         return kakaoTokenResponseDto.accessToken();
+    }
+
+    private KakaoUserInfoResponseDto getUserInfo(String accessToken) {
+        return restClient.get()
+                .uri(userInfoUri)
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken)
+                .retrieve()
+                .onStatus(HttpStatusCode::is4xxClientError, ((request, response) -> {
+                    throw new RuntimeException("카카오 사용자 정보 조회를 실패했습니다." + response.getStatusCode());
+                }))
+                .onStatus(HttpStatusCode::is5xxServerError, ((request, response) -> {
+                    throw new RuntimeException("카카오 서버에 문제가 생겼습니다." + response.getStatusCode());
+                }))
+                .body(KakaoUserInfoResponseDto.class);
     }
 }
