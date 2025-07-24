@@ -3,6 +3,8 @@ package gift.kakao.service;
 
 import gift.kakao.dto.KakaoTokenResponseDto;
 import gift.kakao.dto.KakaoUserInfoResponseDto;
+import gift.member.entity.Member;
+import gift.member.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatusCode;
@@ -18,15 +20,17 @@ public class KakaoLoginService {
     private final String tokenUri;
     private final String userInfoUri;
     private final RestClient restClient;
+    private final MemberRepository memberRepository;
 
     public KakaoLoginService(
             @Value("${kakao.client_id}") String clientId,
             @Value("${kakao.token_uri}") String tokenUri,
-            @Value("${kakao.user_info_uri}")  String userInfoUri) {
+            @Value("${kakao.user_info_uri}")  String userInfoUri, MemberRepository memberRepository) {
                 this.clientId = clientId;
                 this.tokenUri = tokenUri;
                 this.userInfoUri = userInfoUri;
-                this.restClient = RestClient.create();
+        this.memberRepository = memberRepository;
+        this.restClient = RestClient.create();
     }
 
 
@@ -69,5 +73,16 @@ public class KakaoLoginService {
                     throw new RuntimeException("카카오 서버에 문제가 생겼습니다." + response.getStatusCode());
                 }))
                 .body(KakaoUserInfoResponseDto.class);
+    }
+
+    private Member registerOrLoginUser(KakaoUserInfoResponseDto userInfoResponseDto) {
+        String provider = "KAKAO";
+        String providerId = userInfoResponseDto.id().toString();
+
+        return memberRepository.findByProviderAndProviderId(provider, providerId)
+                .orElseGet(() -> {
+                    Member newMember = new Member(provider, providerId);
+                    return memberRepository.save(newMember);
+                });
     }
 }
