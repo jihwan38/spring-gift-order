@@ -8,3 +8,4 @@
   - [x] 카카오 로그인 페이지를 위한 html 파일 추가
   - [x] `/kakao/login` URL 에 대한 컨트롤러 구현
 - [x] 카카오가 Redirect URI 로 설정된 `http://localhost:8080`로 반환하는 인가코드를 처리하는 컨트롤러 구현
+- [x] 카카오가 반환하는 엑세스 토큰에 대한 정보를 담을 KakaoTokenResponseDto 구현
