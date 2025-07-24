@@ -1,9 +1,7 @@
 package gift.kakao;
 
 import gift.kakao.service.KakaoLoginService;
-import gift.member.dto.response.MemberResponseDto;
 import gift.member.dto.response.TokenResponseDto;
-import gift.member.entity.Member;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
