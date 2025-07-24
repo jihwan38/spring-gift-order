@@ -15,6 +15,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestClient;
@@ -51,6 +52,7 @@ public class KakaoLoginService {
         this.tokenProvider = tokenProvider;
     }
 
+    @Transactional
     public TokenResponseDto loginUsingKakao(String code) {
         String accessToken = getAccessToken(code);
 
