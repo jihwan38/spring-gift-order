@@ -3,8 +3,11 @@ package gift.kakao.service;
 
 import gift.kakao.dto.KakaoTokenResponseDto;
 import gift.kakao.dto.KakaoUserInfoResponseDto;
+import gift.member.dto.response.MemberResponseDto;
+import gift.member.dto.response.TokenResponseDto;
 import gift.member.entity.Member;
 import gift.member.repository.MemberRepository;
+import gift.member.token.TokenProvider;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatusCode;
@@ -17,20 +20,37 @@ import org.springframework.web.client.RestClient;
 @Service
 public class KakaoLoginService {
     private final String clientId;
+    private final String redirectUri;
     private final String tokenUri;
     private final String userInfoUri;
     private final RestClient restClient;
     private final MemberRepository memberRepository;
+    private final TokenProvider tokenProvider;
 
     public KakaoLoginService(
             @Value("${kakao.client_id}") String clientId,
+            @Value("${kakao.redirect_uri}")String redirectUri,
             @Value("${kakao.token_uri}") String tokenUri,
-            @Value("${kakao.user_info_uri}")  String userInfoUri, MemberRepository memberRepository) {
+            @Value("${kakao.user_info_uri}")  String userInfoUri, MemberRepository memberRepository, TokenProvider tokenProvider) {
                 this.clientId = clientId;
-                this.tokenUri = tokenUri;
+        this.redirectUri = redirectUri;
+        this.tokenUri = tokenUri;
                 this.userInfoUri = userInfoUri;
         this.memberRepository = memberRepository;
         this.restClient = RestClient.create();
+        this.tokenProvider = tokenProvider;
+    }
+
+    public TokenResponseDto loginUsingKakao(String code) {
+        String accessToken = getAccessToken(code);
+
+        KakaoUserInfoResponseDto userInfoResponseDto = getUserInfo(accessToken);
+
+        Member member = registerOrLoginUser(userInfoResponseDto);
+
+        String myAccessToken = tokenProvider.generateToken(MemberResponseDto.from(member));
+
+        return new TokenResponseDto(myAccessToken);
     }
 
 
@@ -38,7 +58,7 @@ public class KakaoLoginService {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("grant_type", "authorization_code");
         params.add("client_id", clientId);
-        params.add("redirect_uri", tokenUri);
+        params.add("redirect_uri", redirectUri);
         params.add("code", code);
 
         KakaoTokenResponseDto kakaoTokenResponseDto = restClient.post()

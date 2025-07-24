@@ -13,4 +13,5 @@
   - [x] 인가 코드를 통해 카카오의 엑세스 토큰을 반환받는 메서드 구현
   - [x] 카카오 사용자 정보를 얻을 수 있는 getUserInfo 추가
   - [x] MemberRepository에서 카카오 회원이 있는지 조회하여 반환하거나 없을 경우 DB에 저장 후 반환하는 registerOrLoginUser 추가 
+  - [x] 기존 TokenProvider 를 이용해 엑세스 토큰을 생성하여 반환하도록 loginUsingKakao 추가
 - [x] 회원 로그인 방식을 두 개로 나뉘기 위해 Member와 관련된 전체적인 코드 변경
