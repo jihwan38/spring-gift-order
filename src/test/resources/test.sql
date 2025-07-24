@@ -15,5 +15,5 @@ VALUES
     ('예제상품3', 30000, 'http://image3.url', true),
     ('예제상품4', 40000, 'http://image4.url', false);
 
-INSERT INTO member (email, salt, password, role) VALUES ('admin@daum.net', '3dNddJreO8FFohd3PMqS6w==', 'KmmwafNvA+/YYmnXi33Vf4Xa26uyr9dNajVhugCrkp0=', 'ADMIN');
+INSERT INTO member (email, salt, password, role, provider, provider_id) VALUES ('admin@daum.net', '3dNddJreO8FFohd3PMqS6w==', 'KmmwafNvA+/YYmnXi33Vf4Xa26uyr9dNajVhugCrkp0=', 'ADMIN', 'LOCAL', 'admin@daum.net');
 

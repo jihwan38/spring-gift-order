@@ -48,7 +48,7 @@ public class WishlistServiceTest {
 
     @BeforeEach
     void setUp() {
-        member = new Member(1L, "user@example.com", "salt", "password", "USER");
+        member = new Member(1L, "user@example.com", "salt", "password", "USER", "LOCAL", "user@example.com");
         product1 = new Product(10L, "일반상품", 1000L, "http://image1.url", false);
         product2 = new Product(20L, "카카오상품", 2000L, "http://image2.url", true);
         wish1 = new Wishlist(1L, member, product1, 3);
