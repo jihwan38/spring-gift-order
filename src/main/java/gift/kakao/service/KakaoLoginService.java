@@ -1,6 +1,8 @@
 package gift.kakao.service;
 
 
+import gift.kakao.dto.AgreeScopeInfo;
+import gift.kakao.dto.KakaoAgreeResponseDto;
 import gift.kakao.dto.KakaoTokenResponseDto;
 import gift.kakao.dto.KakaoUserInfoResponseDto;
 import gift.member.dto.response.MemberResponseDto;
@@ -16,6 +18,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestClient;
+import org.springframework.web.util.UriComponentsBuilder;
+
+import java.net.URI;
 
 @Service
 public class KakaoLoginService {
@@ -23,6 +28,7 @@ public class KakaoLoginService {
     private final String redirectUri;
     private final String tokenUri;
     private final String userInfoUri;
+    private final String checkAgreeUri;
     private final RestClient restClient;
     private final MemberRepository memberRepository;
     private final TokenProvider tokenProvider;
@@ -31,11 +37,15 @@ public class KakaoLoginService {
             @Value("${kakao.client_id}") String clientId,
             @Value("${kakao.redirect_uri}")String redirectUri,
             @Value("${kakao.token_uri}") String tokenUri,
-            @Value("${kakao.user_info_uri}")  String userInfoUri, MemberRepository memberRepository, TokenProvider tokenProvider) {
-                this.clientId = clientId;
+            @Value("${kakao.user_info_uri}")  String userInfoUri,
+            @Value("${kakao.check_agree_uri}")String checkAgreeUri,
+            MemberRepository memberRepository,
+            TokenProvider tokenProvider) {
+        this.clientId = clientId;
         this.redirectUri = redirectUri;
         this.tokenUri = tokenUri;
-                this.userInfoUri = userInfoUri;
+        this.userInfoUri = userInfoUri;
+        this.checkAgreeUri = checkAgreeUri;
         this.memberRepository = memberRepository;
         this.restClient = RestClient.create();
         this.tokenProvider = tokenProvider;
@@ -51,6 +61,36 @@ public class KakaoLoginService {
         String myAccessToken = tokenProvider.generateToken(MemberResponseDto.from(member));
 
         return new TokenResponseDto(myAccessToken);
+    }
+
+    public boolean checkTalkMessageAgree(String accessToken) {
+        URI uri = UriComponentsBuilder.fromUriString(checkAgreeUri)
+                .queryParam("scopes", "[\"talk_message\"]")
+                .build()
+                .toUri();
+
+        KakaoAgreeResponseDto kakaoAgreeResponseDto = restClient.get()
+                .uri(uri)
+                .header(HttpHeaders.AUTHORIZATION, "Bearer" + accessToken)
+                .retrieve()
+                .onStatus(HttpStatusCode::is4xxClientError, ((request, response) -> {
+                    throw new RuntimeException("동의 항목을 조회 실패했습니다." + response.getStatusCode());
+                }))
+                .onStatus(HttpStatusCode::is5xxServerError, ((request, response) -> {
+                    throw new RuntimeException("<UNK> <UNK> <UNK> <UNK>." + response.getStatusCode());
+                }))
+                .body(KakaoAgreeResponseDto.class);
+
+        if(kakaoAgreeResponseDto == null || kakaoAgreeResponseDto.agreeScopes() == null) {
+            return false;
+        }
+
+        return kakaoAgreeResponseDto.agreeScopes()
+                .stream()
+                .filter(scope -> "talk_message".equals(scope.id()))
+                .findFirst()
+                .map(AgreeScopeInfo::agreed)
+                .orElse(false);
     }
 
 

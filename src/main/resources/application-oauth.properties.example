@@ -2,3 +2,4 @@ kakao.client-id = 카카오_REST_API
 kakao.redirect-uri = http://localhost:8080
 kakao.token_uri=https://kauth.kakao.com/oauth/token
 kakao.user_info_uri=https://kapi.kakao.com/v2/user/me
+kakao.check_agree_uri=https://kapi.kakao.com/v2/user/scopes
