@@ -1,4 +1,4 @@
-package gift.kakao;
+package gift.kakao.controller;
 
 
 import org.springframework.beans.factory.annotation.Value;

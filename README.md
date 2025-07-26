@@ -16,3 +16,4 @@
   - [x] 기존 TokenProvider 를 이용해 엑세스 토큰을 생성하여 반환하도록 loginUsingKakao 추가
   - [x] 카카오 메시지 수신 동의를 했는지 확인하는 checkTalkMessageAgree 추가
 - [x] 회원 로그인 방식을 두 개로 나뉘기 위해 Member와 관련된 전체적인 코드 변경
+- [x] 커스텀 예외 클래스(`KakaoClientException`, `KakaoServerException`) 추가 및 적용

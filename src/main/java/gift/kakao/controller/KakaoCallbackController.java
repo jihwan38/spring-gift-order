@@ -1,4 +1,4 @@
-package gift.kakao;
+package gift.kakao.controller;
 
 import gift.kakao.service.KakaoLoginService;
 import gift.member.dto.response.TokenResponseDto;

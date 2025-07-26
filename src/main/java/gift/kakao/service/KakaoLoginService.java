@@ -1,6 +1,8 @@
 package gift.kakao.service;
 
 
+import gift.exception.KakaoClientException;
+import gift.exception.KakaoServerException;
 import gift.kakao.dto.AgreeScopeInfo;
 import gift.kakao.dto.KakaoAgreeResponseDto;
 import gift.kakao.dto.KakaoTokenResponseDto;
@@ -76,15 +78,15 @@ public class KakaoLoginService {
                 .header(HttpHeaders.AUTHORIZATION, "Bearer" + accessToken)
                 .retrieve()
                 .onStatus(HttpStatusCode::is4xxClientError, ((request, response) -> {
-                    throw new RuntimeException("동의 항목을 조회 실패했습니다." + response.getStatusCode());
+                    throw new KakaoClientException("유효하지 않은 access 토큰입니다.");
                 }))
                 .onStatus(HttpStatusCode::is5xxServerError, ((request, response) -> {
-                    throw new RuntimeException("<UNK> <UNK> <UNK> <UNK>." + response.getStatusCode());
+                    throw new RuntimeException("카카오 서버에 문제가 발생했습니다.");
                 }))
                 .body(KakaoAgreeResponseDto.class);
 
         if(kakaoAgreeResponseDto == null || kakaoAgreeResponseDto.agreeScopes() == null) {
-            return false;
+            throw new KakaoServerException("카카오로부터 메시지 수신 동의항목을 받아내지 못했습니다.");
         }
 
         return kakaoAgreeResponseDto.agreeScopes()
@@ -109,32 +111,38 @@ public class KakaoLoginService {
                 .body(params)
                 .retrieve()
                 .onStatus(HttpStatusCode::is4xxClientError, ((request, response) -> {
-                    throw new RuntimeException("인가코드를 사용한 조회에 실패했습니다." + response.getStatusCode());
+                    throw new KakaoClientException("유효하지 않은 인가코드입니다.");
                 }))
                 .onStatus(HttpStatusCode::is5xxServerError, ((request, response) -> {
-                    throw new RuntimeException("카카오 서버에 문제가 생겼습니다." + response.getStatusCode());
+                    throw new KakaoServerException("카카오 서버에 문제가 발생했습니다.");
                 }))
                 .body(KakaoTokenResponseDto.class);
 
         if (kakaoTokenResponseDto == null || kakaoTokenResponseDto.accessToken() == null) {
-            throw new RuntimeException("카카오 토큰 응답이 비어있거나 액세스 토큰이 없습니다.");
+            throw new KakaoServerException("카카오로부터 유효한 엑세스 토큰을 받지 못했습니다.");
         }
 
         return kakaoTokenResponseDto.accessToken();
     }
 
     private KakaoUserInfoResponseDto getUserInfo(String accessToken) {
-        return restClient.get()
+        KakaoUserInfoResponseDto kakaoUserInfoResponseDto = restClient.get()
                 .uri(userInfoUri)
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken)
                 .retrieve()
                 .onStatus(HttpStatusCode::is4xxClientError, ((request, response) -> {
-                    throw new RuntimeException("카카오 사용자 정보 조회를 실패했습니다." + response.getStatusCode());
+                    throw new KakaoClientException("유요하지 않은 access 토큰입니다.");
                 }))
                 .onStatus(HttpStatusCode::is5xxServerError, ((request, response) -> {
-                    throw new RuntimeException("카카오 서버에 문제가 생겼습니다." + response.getStatusCode());
+                    throw new RuntimeException("카카오 서버에 문제가 발생했습니다..");
                 }))
                 .body(KakaoUserInfoResponseDto.class);
+
+        if(kakaoUserInfoResponseDto == null || kakaoUserInfoResponseDto.id() == null) {
+            throw new KakaoServerException("카카오로부터 유저의 id를 받지 못했습니다.");
+        }
+
+        return kakaoUserInfoResponseDto;
     }
 
     private Member registerOrLoginUser(KakaoUserInfoResponseDto userInfoResponseDto) {
