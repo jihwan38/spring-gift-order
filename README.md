@@ -22,3 +22,5 @@
 ## 1단계 Merge 이후 리뷰 반영
 - [x] .gitignore이 아닌 환경변수 사용하여 RestAPI key 숨기도록 하기
 ## 2단계 - 주문하기
+- [ ] Order API를 위한 기본 틀 구현
+  - [x] OrderRequestDto, OrderResponseDto 구현
