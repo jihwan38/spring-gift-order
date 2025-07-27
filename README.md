@@ -19,3 +19,6 @@
 - [x] 커스텀 예외 클래스(`KakaoClientException`, `KakaoServerException`) 추가 및 적용
 - [x] KakaoLoginService에서 사용하는 RestClient에 Timeout 설정
 - [x] KakaoLoginService 테스트 코드 추가
+## 1단계 Merge 이후 리뷰 반영
+- [x] .gitignore이 아닌 환경변수 사용하여 RestAPI key 숨기도록 하기
+## 2단계 - 주문하기

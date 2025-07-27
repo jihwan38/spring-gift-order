@@ -38,6 +38,3 @@ out/
 
 ### Mac OS ###
 .DS_Store
-
-### Custom - secret ###
-application-oauth.properties
