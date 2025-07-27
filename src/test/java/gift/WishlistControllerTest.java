@@ -53,7 +53,7 @@ public class WishlistControllerTest {
     @MockitoBean
     private MemberRepository memberRepository;
 
-    private Member member = new Member(1L, "user@example.com", "salt", "password", "USER");
+    private Member member = new Member(1L, "user@example.com", "salt", "password", "USER", "LOCAL", "user@exaple.com");
     private Product product1 = new Product(10L, "일반상품", 1000L, "http://image1.url", false);
     private Product product2 = new Product(20L, "카카오상품", 2000L, "http://image2.url", true);
     private Wishlist  wish1 = new Wishlist(1L, member, product1, 3);

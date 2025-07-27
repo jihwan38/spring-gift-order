@@ -23,7 +23,6 @@ public class TokenProvider {
 
         return Jwts.builder()
                 .setSubject(memberResponseDto.id().toString())
-                .claim("member", memberResponseDto.email())
                 .claim("role", memberResponseDto.role())
                 .setIssuedAt(now)
                 .setExpiration(new Date(now.getTime() + 1000 * 60 * 60))

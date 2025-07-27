@@ -5,4 +5,4 @@ VALUES
     ('립스틱', 50000, 'https://i.namu.wiki/i/0GQWD4DtVb4MCjTzYV3lvvFjQE2J05KIoU2-5TPX1Zvq3TXum5D1vYcBkVJndm0YrUntKAwNLRw-qgJ2gtD_Tic8zHCnbTEX5-OEUoiVQ_p_-hS9uD0S8zDak7jcwNtvPvqqjhjRT_NbvPMGt-6HaA.webp', true), -- 카카오 상품 예시
     ('향수', 35000, 'https://image.oliveyoung.co.kr/cfimages/cf-goods/uploads/images/thumbnails/10/0000/0020/A00000020498534ko.jpg?qt=80', false);
 
-INSERT INTO member (email, salt, password, role) VALUES ('admin@daum.net', '3dNddJreO8FFohd3PMqS6w==', 'KmmwafNvA+/YYmnXi33Vf4Xa26uyr9dNajVhugCrkp0=', 'ADMIN');
+INSERT INTO member (email, salt, password, role, provider, provider_id) VALUES ('admin@daum.net', '3dNddJreO8FFohd3PMqS6w==', 'KmmwafNvA+/YYmnXi33Vf4Xa26uyr9dNajVhugCrkp0=', 'ADMIN', 'LOCAL', 'admin@daum.net');

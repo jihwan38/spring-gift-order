@@ -61,5 +61,15 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
     }
 
+    @ExceptionHandler(KakaoClientException.class)
+    public ResponseEntity<?> handleKakaoClientException(KakaoClientException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+    }
+
+    @ExceptionHandler(KakaoServerException.class)
+    public ResponseEntity<?> handleKakaoServerException(KakaoServerException e) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+    }
+
 
 }
