@@ -33,7 +33,7 @@ import static org.springframework.test.web.client.match.MockRestRequestMatchers.
 import static org.springframework.test.web.client.response.MockRestResponseCreators.*;
 
 @ExtendWith(MockitoExtension.class)
-class KakaoLoginServiceMockServerTest {
+public class KakaoLoginServiceTest {
 
     @Mock
     private MemberRepository memberRepository;
