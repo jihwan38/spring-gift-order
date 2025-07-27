@@ -18,3 +18,4 @@
 - [x] 회원 로그인 방식을 두 개로 나뉘기 위해 Member와 관련된 전체적인 코드 변경
 - [x] 커스텀 예외 클래스(`KakaoClientException`, `KakaoServerException`) 추가 및 적용
 - [x] KakaoLoginService에서 사용하는 RestClient에 Timeout 설정
+- [x] KakaoLoginService 테스트 코드 추가
