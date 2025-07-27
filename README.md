@@ -24,3 +24,4 @@
 ## 2단계 - 주문하기
 - [ ] Order API를 위한 기본 틀 구현
   - [x] OrderRequestDto, OrderResponseDto 구현
+  - [x] Order 엔티티 구현
