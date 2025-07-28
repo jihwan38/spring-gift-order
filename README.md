@@ -38,3 +38,5 @@
   - [x] UserKakaoToken entity 추가
   - [x] UserKakaoTokenRepository 추가
   - [x] KakaoLoginService 의 loginUsingKakao 메서드에 토큰 저장 및 업데이트 로직 추가
+- [ ] 상품 주문 시 주문 내역을 Kakao의 나에게 보내기 API를 통해 수령인에게 전달하는 기능 구현
+  - [x] UserKakaoToken에 엑세스 코인 getter 추가하기

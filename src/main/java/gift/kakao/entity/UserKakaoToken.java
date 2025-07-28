@@ -39,6 +39,8 @@ public class UserKakaoToken {
         this.refreshTokenExpiresAt = refreshTokenExpiresAt;
     }
 
+    public String getAccessToken() {return accessToken;}
+
     public void updateUserKakaoToken(String accessToken, String refreshToken, Instant accessTokenExpiresAt, Instant refreshTokenExpiresAt ){
         this.accessToken = accessToken;
         this.refreshToken = refreshToken;
