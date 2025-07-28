@@ -11,7 +11,7 @@ public record OrderResponseDto(
         LocalDateTime orderDateTime,
         String message
 ) {
-    public OrderResponseDto from(Order order) {
+    public static OrderResponseDto from(Order order) {
         return new OrderResponseDto(
                 order.getId(),
                 order.getOption().getId(),
