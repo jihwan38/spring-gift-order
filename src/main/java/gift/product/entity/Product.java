@@ -87,14 +87,12 @@ public class Product {
         checkDuplicateOptionName(name, optionId);
     }
 
-    public void decreaseOptionQuantity(Long optionId, int quantity) {
-        Option option = getOptionByOptionId(optionId);
+    public void decreaseOptionQuantity(Option option, int quantity) {
+        if(!this.getId().equals(option.getProduct().getId())) {
+            throw new IllegalArgumentException("해당 상품에 속한 옵션이 아닙니다.");
+        }
 
         option.decreaseQuantity(quantity);
-
-        if(option.getQuantity() <= 0){
-            this.removeOption(option);
-        }
     }
 
     public void removeOptionByOptionId(Long optionId) {

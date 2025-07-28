@@ -39,6 +39,10 @@ public class Option {
     public Product getProduct() {return product;}
 
     public void decreaseQuantity(int quantity) {
+        if(quantity > this.quantity){
+            throw new IllegalArgumentException("재고가 부족합니다.");
+        }
+
         this.quantity -= quantity;
     }
 
