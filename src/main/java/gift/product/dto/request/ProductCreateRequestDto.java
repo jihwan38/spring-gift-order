@@ -29,5 +29,6 @@ public record ProductCreateRequestDto(
         Boolean isKakaoApprovedByMd,
 
         @Size(min = 1, message= "옵션은 하나 이상이어야 합니다.")
+        @NotNull(message = "옵션리스트를 입력해주세요.")
         List<OptionRequestDto> optionRequestDtoList
         )implements KakaoProductInfo { }
