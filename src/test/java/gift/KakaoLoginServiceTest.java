@@ -5,6 +5,7 @@ import gift.exception.KakaoClientException;
 import gift.exception.KakaoServerException;
 import gift.kakao.dto.KakaoTokenResponseDto;
 import gift.kakao.dto.KakaoUserInfoResponseDto;
+import gift.kakao.repository.UserKakaoTokenRepository;
 import gift.kakao.service.KakaoLoginService;
 import gift.member.dto.response.MemberResponseDto;
 import gift.member.dto.response.TokenResponseDto;
@@ -41,6 +42,9 @@ public class KakaoLoginServiceTest {
     @Mock
     private TokenProvider tokenProvider;
 
+    @Mock
+    private UserKakaoTokenRepository userKakaoTokenRepository;
+
     private MockRestServiceServer mockServer;
     private KakaoLoginService kakaoLoginService;
     private ObjectMapper objectMapper = new ObjectMapper();
@@ -64,6 +68,7 @@ public class KakaoLoginServiceTest {
                 USER_INFO_URI,
                 CHECK_AGREE_URI,
                 memberRepository,
+                userKakaoTokenRepository,
                 tokenProvider,
                 restClientBuilder.build()
         );
@@ -238,9 +243,10 @@ public class KakaoLoginServiceTest {
                 String userInfoUri,
                 String checkAgreeUri,
                 MemberRepository memberRepository,
+                UserKakaoTokenRepository userKakaoTokenRepository,
                 TokenProvider tokenProvider,
                 RestClient restClient) {
-            super(clientId, redirectUri, tokenUri, userInfoUri, checkAgreeUri, memberRepository, tokenProvider);
+            super(clientId, redirectUri, tokenUri, userInfoUri, checkAgreeUri, memberRepository, userKakaoTokenRepository, tokenProvider);
             this.testRestClient = restClient;
 
             try {

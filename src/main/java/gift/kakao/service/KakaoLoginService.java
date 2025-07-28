@@ -7,6 +7,8 @@ import gift.kakao.dto.AgreeScopeInfo;
 import gift.kakao.dto.KakaoAgreeResponseDto;
 import gift.kakao.dto.KakaoTokenResponseDto;
 import gift.kakao.dto.KakaoUserInfoResponseDto;
+import gift.kakao.entity.UserKakaoToken;
+import gift.kakao.repository.UserKakaoTokenRepository;
 import gift.member.dto.response.MemberResponseDto;
 import gift.member.dto.response.TokenResponseDto;
 import gift.member.entity.Member;
@@ -25,6 +27,7 @@ import org.springframework.web.client.RestClient;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
+import java.time.Instant;
 
 @Service
 public class KakaoLoginService {
@@ -35,6 +38,7 @@ public class KakaoLoginService {
     private final String checkAgreeUri;
     private final RestClient restClient;
     private final MemberRepository memberRepository;
+    private final UserKakaoTokenRepository userKakaoTokenRepository;
     private final TokenProvider tokenProvider;
 
     public KakaoLoginService(
@@ -44,6 +48,7 @@ public class KakaoLoginService {
             @Value("${kakao.user_info_uri}")  String userInfoUri,
             @Value("${kakao.check_agree_uri}")String checkAgreeUri,
             MemberRepository memberRepository,
+            UserKakaoTokenRepository userKakaoTokenRepository,
             TokenProvider tokenProvider) {
         this.clientId = clientId;
         this.redirectUri = redirectUri;
@@ -52,6 +57,7 @@ public class KakaoLoginService {
         this.checkAgreeUri = checkAgreeUri;
         this.memberRepository = memberRepository;
         this.tokenProvider = tokenProvider;
+        this.userKakaoTokenRepository = userKakaoTokenRepository;
 
         SimpleClientHttpRequestFactory requestFactory = new SimpleClientHttpRequestFactory();
         requestFactory.setConnectTimeout(5000);
@@ -64,11 +70,36 @@ public class KakaoLoginService {
 
     @Transactional
     public TokenResponseDto loginUsingKakao(String code) {
-        String accessToken = getAccessToken(code);
+        KakaoTokenResponseDto kakaoTokenResponseDto = getKakaoTokenInfo(code);
 
-        KakaoUserInfoResponseDto userInfoResponseDto = getUserInfo(accessToken);
+        KakaoUserInfoResponseDto userInfoResponseDto = getUserInfo(kakaoTokenResponseDto.accessToken());
 
         Member member = registerOrLoginUser(userInfoResponseDto);
+
+        Instant accessTokenExpiresAt = Instant.now().plusSeconds(kakaoTokenResponseDto.expiresIn());
+        Instant refreshTokenExpiresAt = Instant.now().plusSeconds(kakaoTokenResponseDto.refreshTokenExpiresIn());
+
+        UserKakaoToken token = userKakaoTokenRepository.findById(member.getId())
+                .map(existingToken -> {
+                    existingToken.updateUserKakaoToken(
+                            kakaoTokenResponseDto.accessToken(),
+                            kakaoTokenResponseDto.refreshToken(),
+                            accessTokenExpiresAt,
+                            refreshTokenExpiresAt
+                    );
+                    return existingToken;
+                })
+                .orElseGet(() ->
+                        new UserKakaoToken(
+                                member.getId(),
+                                kakaoTokenResponseDto.accessToken(),
+                                kakaoTokenResponseDto.refreshToken(),
+                                accessTokenExpiresAt,
+                                refreshTokenExpiresAt
+                        )
+                );
+
+        userKakaoTokenRepository.save(token);
 
         String myAccessToken = tokenProvider.generateToken(MemberResponseDto.from(member));
 
@@ -106,7 +137,7 @@ public class KakaoLoginService {
     }
 
 
-    private String getAccessToken(String code) {
+    private KakaoTokenResponseDto getKakaoTokenInfo(String code) {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("grant_type", "authorization_code");
         params.add("client_id", clientId);
@@ -130,7 +161,7 @@ public class KakaoLoginService {
             throw new KakaoServerException("카카오로부터 유효한 엑세스 토큰을 받지 못했습니다.");
         }
 
-        return kakaoTokenResponseDto.accessToken();
+        return kakaoTokenResponseDto;
     }
 
     private KakaoUserInfoResponseDto getUserInfo(String accessToken) {

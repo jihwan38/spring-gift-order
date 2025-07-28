@@ -34,6 +34,7 @@
   - [x] OptionController에 order 메서드 구현
   - [x] `/api/orders/**` 경로에 로그인 인터셉터 적용
   - [x] OrderService에 orderProduct 메서드 구현
-- [ ] 토큰 정보 저장 및 업데이트 기능 구현
+- [x] 토큰 정보 저장 및 업데이트 기능 구현
   - [x] UserKakaoToken entity 추가
   - [x] UserKakaoTokenRepository 추가
+  - [x] KakaoLoginService 의 loginUsingKakao 메서드에 토큰 저장 및 업데이트 로직 추가
