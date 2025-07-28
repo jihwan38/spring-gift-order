@@ -60,8 +60,8 @@ public class KakaoLoginService {
         this.userKakaoTokenRepository = userKakaoTokenRepository;
 
         SimpleClientHttpRequestFactory requestFactory = new SimpleClientHttpRequestFactory();
-        requestFactory.setConnectTimeout(5000);
-        requestFactory.setReadTimeout(5000);
+        requestFactory.setConnectTimeout(3000);
+        requestFactory.setReadTimeout(3000);
 
         this.restClient = RestClient.builder()
                 .requestFactory(requestFactory)
