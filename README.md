@@ -42,3 +42,4 @@
   - [x] UserKakaoToken에 엑세스 코인 getter 추가하기
   - [x] application-kakao.properties에 Kakao의 talk_message 기능을 사용할 수 있는 URI 경로 추가하기
   - [x] 카카오의 메시지 기본 템플릿(텍스트) 사용을 위해 MessageLinkDto 및 MessageTemplateDto 생성
+  - [x] KakaoMessageService 추가 및 수령인에게 메시지 보내기 기능 구현
