@@ -32,3 +32,4 @@
   - Option의 decreaseOptionQuantity 로직 수정(주문 수량이 재고보다 많을 경우 예외를 던짐)
 - [ ] Order의 주문하기 기능 구현
   - [x] OptionController에 order 메서드 구현
+  - [x] `/api/orders/**` 경로에 로그인 인터셉터 적용
