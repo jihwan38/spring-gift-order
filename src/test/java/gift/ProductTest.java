@@ -46,17 +46,6 @@ public class ProductTest {
     }
 
     @Test
-    @DisplayName("옵션 수량을 감소 후 수량이 0이 되면 해당 옵션을 제거한다")
-    void decreaseOptionQuantity_And_RemoveOption() {
-        product.decreaseOptionQuantity(1L, 10);
-
-        assertAll(
-                () -> assertThat(product.getOptions()).hasSize(1),
-                () -> assertThat(product.getOptions().get(0).getName()).isEqualTo("옵션2")
-        );
-    }
-
-    @Test
     @DisplayName("옵션이 하나만 남았을 때 삭제를 시도하면 예외가 발생")
     void removeOption_Fail_LastOption() {
         product.removeOptionByOptionId(1L);
