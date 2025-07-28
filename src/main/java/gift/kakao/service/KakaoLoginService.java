@@ -114,7 +114,7 @@ public class KakaoLoginService {
 
         KakaoAgreeResponseDto kakaoAgreeResponseDto = restClient.get()
                 .uri(uri)
-                .header(HttpHeaders.AUTHORIZATION, "Bearer" + accessToken)
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken)
                 .retrieve()
                 .onStatus(HttpStatusCode::is4xxClientError, ((request, response) -> {
                     throw new KakaoClientException("유효하지 않은 access 토큰입니다.");
