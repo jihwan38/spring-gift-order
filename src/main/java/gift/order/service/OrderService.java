@@ -1,6 +1,6 @@
 package gift.order.service;
 
-import gift.kakao.service.KakaoLoginService;
+
 import gift.member.entity.Member;
 import gift.order.dto.OrderRequestDto;
 import gift.order.dto.OrderResponseDto;
@@ -9,7 +9,6 @@ import gift.order.repository.OrderRepository;
 import gift.product.entity.Option;
 import gift.product.entity.Product;
 import gift.product.repository.OptionRepository;
-import gift.product.repository.ProductRepository;
 import gift.wishlist.repository.WishlistRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,18 +17,16 @@ import org.springframework.transaction.annotation.Transactional;
 public class OrderService {
     private final OrderRepository orderRepository;
     private final WishlistRepository wishlistRepository;
-    private final ProductRepository productRepository;
+
     private final OptionRepository optionRepository;
     private final KakaoMessageService kakaoMessageService;
-    private final KakaoLoginService kakaoLoginService;
 
-    public OrderService(OrderRepository orderRepository, WishlistRepository wishlistRepository, ProductRepository productRepository, OptionRepository optionRepository, KakaoMessageService kakaoMessageService, KakaoLoginService kakaoLoginService) {
+
+    public OrderService(OrderRepository orderRepository, WishlistRepository wishlistRepository, OptionRepository optionRepository, KakaoMessageService kakaoMessageService) {
         this.orderRepository = orderRepository;
         this.wishlistRepository = wishlistRepository;
-        this.productRepository = productRepository;
         this.optionRepository = optionRepository;
         this.kakaoMessageService = kakaoMessageService;
-        this.kakaoLoginService = kakaoLoginService;
     }
 
     @Transactional
