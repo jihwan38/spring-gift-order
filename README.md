@@ -38,8 +38,9 @@
   - [x] UserKakaoToken entity 추가
   - [x] UserKakaoTokenRepository 추가
   - [x] KakaoLoginService 의 loginUsingKakao 메서드에 토큰 저장 및 업데이트 로직 추가
-- [ ] 상품 주문 시 주문 내역을 Kakao의 나에게 보내기 API를 통해 수령인에게 전달하는 기능 구현
+- [x] 상품 주문 시 주문 내역을 Kakao의 나에게 보내기 API를 통해 수령인에게 전달하는 기능 구현
   - [x] UserKakaoToken에 엑세스 코인 getter 추가하기
   - [x] application-kakao.properties에 Kakao의 talk_message 기능을 사용할 수 있는 URI 경로 추가하기
   - [x] 카카오의 메시지 기본 템플릿(텍스트) 사용을 위해 MessageLinkDto 및 MessageTemplateDto 생성
   - [x] KakaoMessageService 추가 및 수령인에게 메시지 보내기 기능 구현
+  - [x] OrderService 에서 Order 저장 후 KakaoMessageService의 sendMessage 호출하도록 로직 변경

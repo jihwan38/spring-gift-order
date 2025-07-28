@@ -1,5 +1,6 @@
 package gift.order.service;
 
+import gift.kakao.service.KakaoLoginService;
 import gift.member.entity.Member;
 import gift.order.dto.OrderRequestDto;
 import gift.order.dto.OrderResponseDto;
@@ -19,12 +20,16 @@ public class OrderService {
     private final WishlistRepository wishlistRepository;
     private final ProductRepository productRepository;
     private final OptionRepository optionRepository;
+    private final KakaoMessageService kakaoMessageService;
+    private final KakaoLoginService kakaoLoginService;
 
-    public OrderService(OrderRepository orderRepository, WishlistRepository wishlistRepository, ProductRepository productRepository, OptionRepository optionRepository) {
+    public OrderService(OrderRepository orderRepository, WishlistRepository wishlistRepository, ProductRepository productRepository, OptionRepository optionRepository, KakaoMessageService kakaoMessageService, KakaoLoginService kakaoLoginService) {
         this.orderRepository = orderRepository;
         this.wishlistRepository = wishlistRepository;
         this.productRepository = productRepository;
         this.optionRepository = optionRepository;
+        this.kakaoMessageService = kakaoMessageService;
+        this.kakaoLoginService = kakaoLoginService;
     }
 
     @Transactional
@@ -38,9 +43,13 @@ public class OrderService {
         wishlistRepository.findByMemberAndProduct(loginMember, product)
                 .ifPresent(wishlistRepository::delete);
 
-        Order newOrder = new Order(option, orderRequestDto.quantity(), orderRequestDto.message(), loginMember);
+        Order savedOrder = orderRepository.save(new Order(option, orderRequestDto.quantity(), orderRequestDto.message(), loginMember));
 
-        return OrderResponseDto.from(orderRepository.save(newOrder));
+
+
+        kakaoMessageService.sendMessage(savedOrder);
+
+        return OrderResponseDto.from(savedOrder);
     }
 
     private Option getOptionByOptionId(Long optionId) {
