@@ -57,13 +57,6 @@ public class OptionService {
     }
 
     @Transactional
-    public void decreaseOptionQuantity(Long productId, Long optionId, int quantityToDecrease) {
-        Product product = getProduct(productId);
-
-        product.decreaseOptionQuantity(optionId, quantityToDecrease);
-    }
-
-    @Transactional
     public void deleteOption(Long productId, Long optionId) {
         Product product = getProduct(productId);
 
