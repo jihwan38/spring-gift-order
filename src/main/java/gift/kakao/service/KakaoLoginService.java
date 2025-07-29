@@ -76,8 +76,10 @@ public class KakaoLoginService {
 
         Member member = registerOrLoginUser(userInfoResponseDto);
 
-        Instant accessTokenExpiresAt = Instant.now().plusSeconds(kakaoTokenResponseDto.expiresIn());
-        Instant refreshTokenExpiresAt = Instant.now().plusSeconds(kakaoTokenResponseDto.refreshTokenExpiresIn());
+        Instant now = Instant.now();
+
+        Instant accessTokenExpiresAt = now.plusSeconds(kakaoTokenResponseDto.expiresIn());
+        Instant refreshTokenExpiresAt = now.plusSeconds(kakaoTokenResponseDto.refreshTokenExpiresIn());
 
         UserKakaoToken token = userKakaoTokenRepository.findById(member.getId())
                 .map(existingToken -> {
