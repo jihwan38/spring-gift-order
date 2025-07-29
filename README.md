@@ -44,5 +44,6 @@
   - [x] 카카오의 메시지 기본 템플릿(텍스트) 사용을 위해 MessageLinkDto 및 MessageTemplateDto 생성
   - [x] KakaoMessageService 추가 및 수령인에게 메시지 보내기 기능 구현
   - [x] OrderService 에서 Order 저장 후 KakaoMessageService의 sendMessage 호출하도록 로직 변경
+  - [x] 주문과 카카오 메시지 전송 로직을 이벤트 기반으로 분리
 - [x] 주문하기 기능에 동시성 문제 해결을 위해 @Version(Option) 및 @Retryable(OptionService) 적용
 
