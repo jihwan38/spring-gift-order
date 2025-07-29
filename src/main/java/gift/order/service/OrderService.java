@@ -45,11 +45,9 @@ public class OrderService {
     public OrderResponseDto orderProduct(Member loginMember, OrderRequestDto orderRequestDto) {
         Option option = getOptionByOptionId(orderRequestDto.optionId());
 
-        Product product = option.getProduct();
+        option.decreaseQuantity(orderRequestDto.quantity());
 
-        product.decreaseOptionQuantity(option, orderRequestDto.quantity());
-
-        wishlistRepository.findByMemberAndProduct(loginMember, product)
+        wishlistRepository.findByMemberAndProduct(loginMember, option.getProduct())
                 .ifPresent(wishlistRepository::delete);
 
         Order savedOrder = orderRepository.save(new Order(option, orderRequestDto.quantity(), orderRequestDto.message(), loginMember));
