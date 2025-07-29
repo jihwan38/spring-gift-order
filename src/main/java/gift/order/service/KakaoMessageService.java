@@ -63,31 +63,31 @@ public class KakaoMessageService {
 
         MessageTemplateDto messageTemplateDto = new MessageTemplateDto("text", text, messageLinkDto);
 
-        try{
-            String jsonTemplate = objectMapper.writeValueAsString(messageTemplateDto);
+        String jsonTemplate;
 
-            MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
-
-            body.add("template_object", jsonTemplate);
-
-            restClient.post()
-                    .uri(talkUri)
-                    .header(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken)
-                    .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                    .body(body)
-                    .retrieve()
-                    .onStatus(HttpStatusCode::is4xxClientError, ((request, response) -> {
-                        throw new KakaoClientException("카카오에 잘못된 템플릿을 전달하였습니다.");
-                    }))
-                    .onStatus(HttpStatusCode::is5xxServerError, ((request, response) -> {
-                        throw new KakaoServerException("카카오 서버에 문제가 발생했습니다.");
-                    }))
-                    .toBodilessEntity();
-
-        }catch(JsonProcessingException e){
+        try {
+            jsonTemplate = objectMapper.writeValueAsString(messageTemplateDto);
+        } catch (JsonProcessingException e) {
             throw new IllegalArgumentException("카카오 메시지 생성에 실패하였습니다.");
         }
 
+        MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
+
+        body.add("template_object", jsonTemplate);
+
+        restClient.post()
+                .uri(talkUri)
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken)
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .body(body)
+                .retrieve()
+                .onStatus(HttpStatusCode::is4xxClientError, ((request, response) -> {
+                    throw new KakaoClientException("카카오에 잘못된 템플릿을 전달하였습니다.");
+                }))
+                .onStatus(HttpStatusCode::is5xxServerError, ((request, response) -> {
+                    throw new KakaoServerException("카카오 서버에 문제가 발생했습니다.");
+                }))
+                .toBodilessEntity();
     }
 
     private String createText(Order order){
