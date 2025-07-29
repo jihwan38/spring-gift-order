@@ -56,7 +56,7 @@ public class KakaoMessageService {
                 .getAccessToken();
 
         if (!kakaoLoginService.checkTalkMessageAgree(accessToken)) {
-            throw new IllegalStateException("사용자가 카카오톡 메시지 수신에 동의하지 않았습니다.");
+            return;
         }
 
         String text = createText(order);
