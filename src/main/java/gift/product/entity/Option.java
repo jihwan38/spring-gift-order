@@ -19,6 +19,9 @@ public class Option {
     @JoinColumn(name = "product_id", nullable = false)
     private Product product;
 
+    @Version
+    private Long version;
+
     protected Option() {}
 
     public Option(Long id, String name, int quantity, Product product) {

@@ -1,6 +1,7 @@
 package gift.order.service;
 
 
+import gift.exception.ConcurrencyConflictException;
 import gift.member.entity.Member;
 import gift.order.dto.OrderRequestDto;
 import gift.order.dto.OrderResponseDto;
@@ -10,6 +11,10 @@ import gift.product.entity.Option;
 import gift.product.entity.Product;
 import gift.product.repository.OptionRepository;
 import gift.wishlist.repository.WishlistRepository;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
+import org.springframework.retry.annotation.Backoff;
+import org.springframework.retry.annotation.Recover;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,6 +35,11 @@ public class OrderService {
     }
 
     @Transactional
+    @Retryable(
+            retryFor = ObjectOptimisticLockingFailureException.class,
+            maxAttempts = 3,
+            backoff = @Backoff(delay = 300)
+    )
     public OrderResponseDto orderProduct(Member loginMember, OrderRequestDto orderRequestDto) {
         Option option = getOptionByOptionId(orderRequestDto.optionId());
 
@@ -47,6 +57,13 @@ public class OrderService {
         kakaoMessageService.sendMessage(savedOrder);
 
         return OrderResponseDto.from(savedOrder);
+    }
+
+    @Recover
+    public OrderResponseDto recover(ObjectOptimisticLockingFailureException e,
+                        Member loginMember,
+                        OrderRequestDto orderRequestDto) {
+        throw new ConcurrencyConflictException("요청이 많아 실패했습니다.");
     }
 
     private Option getOptionByOptionId(Long optionId) {

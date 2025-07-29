@@ -75,4 +75,9 @@ public class GlobalExceptionHandler {
     public ResponseEntity<?> handleIllegalArgumentException(IllegalArgumentException e) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     }
+
+    @ExceptionHandler(ConcurrencyConflictException.class)
+    public ResponseEntity<?> handleConcurrencyConflictException(ConcurrencyConflictException e) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+    }
 }
