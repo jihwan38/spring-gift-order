@@ -5,6 +5,7 @@ import gift.exception.KakaoClientException;
 import gift.exception.KakaoServerException;
 import gift.kakao.dto.KakaoTokenResponseDto;
 import gift.kakao.dto.KakaoUserInfoResponseDto;
+import gift.kakao.repository.UserKakaoTokenRepository;
 import gift.kakao.service.KakaoLoginService;
 import gift.member.dto.response.MemberResponseDto;
 import gift.member.dto.response.TokenResponseDto;
@@ -27,19 +28,21 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.*;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.*;
 
 @ExtendWith(MockitoExtension.class)
-class KakaoLoginServiceMockServerTest {
+public class KakaoLoginServiceTest {
 
     @Mock
     private MemberRepository memberRepository;
 
     @Mock
     private TokenProvider tokenProvider;
+
+    @Mock
+    private UserKakaoTokenRepository userKakaoTokenRepository;
 
     private MockRestServiceServer mockServer;
     private KakaoLoginService kakaoLoginService;
@@ -64,6 +67,7 @@ class KakaoLoginServiceMockServerTest {
                 USER_INFO_URI,
                 CHECK_AGREE_URI,
                 memberRepository,
+                userKakaoTokenRepository,
                 tokenProvider,
                 restClientBuilder.build()
         );
@@ -238,9 +242,10 @@ class KakaoLoginServiceMockServerTest {
                 String userInfoUri,
                 String checkAgreeUri,
                 MemberRepository memberRepository,
+                UserKakaoTokenRepository userKakaoTokenRepository,
                 TokenProvider tokenProvider,
                 RestClient restClient) {
-            super(clientId, redirectUri, tokenUri, userInfoUri, checkAgreeUri, memberRepository, tokenProvider);
+            super(clientId, redirectUri, tokenUri, userInfoUri, checkAgreeUri, memberRepository, userKakaoTokenRepository, tokenProvider);
             this.testRestClient = restClient;
 
             try {

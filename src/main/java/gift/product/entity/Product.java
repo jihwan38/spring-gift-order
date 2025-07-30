@@ -87,16 +87,6 @@ public class Product {
         checkDuplicateOptionName(name, optionId);
     }
 
-    public void decreaseOptionQuantity(Long optionId, int quantity) {
-        Option option = getOptionByOptionId(optionId);
-
-        option.decreaseQuantity(quantity);
-
-        if(option.getQuantity() <= 0){
-            this.removeOption(option);
-        }
-    }
-
     public void removeOptionByOptionId(Long optionId) {
         Option option = getOptionByOptionId(optionId);
 

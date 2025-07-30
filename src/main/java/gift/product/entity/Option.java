@@ -19,6 +19,9 @@ public class Option {
     @JoinColumn(name = "product_id", nullable = false)
     private Product product;
 
+    @Version
+    private Long version;
+
     protected Option() {}
 
     public Option(Long id, String name, int quantity, Product product) {
@@ -39,6 +42,10 @@ public class Option {
     public Product getProduct() {return product;}
 
     public void decreaseQuantity(int quantity) {
+        if(quantity > this.quantity){
+            throw new IllegalArgumentException("재고가 부족합니다.");
+        }
+
         this.quantity -= quantity;
     }
 
