@@ -8,7 +8,6 @@ import gift.order.dto.OrderResponseDto;
 import gift.order.entity.Order;
 import gift.order.repository.OrderRepository;
 import gift.product.entity.Option;
-import gift.product.entity.Product;
 import gift.product.repository.OptionRepository;
 import gift.wishlist.repository.WishlistRepository;
 import org.springframework.context.ApplicationEventPublisher;
