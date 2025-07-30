@@ -15,6 +15,7 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.web.client.RestClient;
 
@@ -25,6 +26,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 
 @Sql("/test.sql")
+@TestPropertySource(properties = {
+        "kakao.client_id=test_client_id"
+})
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class E2EProductTest {
     @LocalServerPort
@@ -207,11 +211,12 @@ public class E2EProductTest {
 
     @Test
     void 이름에_카카오가_포함되고_협의하지_않았을_때_상품_추가_실패() {
-        var invalidProduct = new ProductRequestDto(
+        var invalidProduct = new ProductCreateRequestDto(
                 "카카오 상품",
                 25000L,
                 "http://image.url",
-                false
+                false,
+                List.of(new OptionRequestDto("옵션", 3))
         );
 
         var response = client.post()
@@ -230,6 +235,4 @@ public class E2EProductTest {
 
         assertThat(response.getBody()).isEqualTo(expectedError);
     }
-
-
 }
