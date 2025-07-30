@@ -47,4 +47,5 @@
   - [x] 주문과 카카오 메시지 전송 로직을 이벤트 기반으로 분리
 - [x] 주문하기 기능에 동시성 문제 해결을 위해 @Version(Option) 및 @Retryable(OptionService) 적용
 - [x] OrderService에 대한 테스트 추가
+- [x] KakaoMessageService에 대한 테스트 추가
 
