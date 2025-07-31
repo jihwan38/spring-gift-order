@@ -27,7 +27,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @Sql("/test.sql")
 @TestPropertySource(properties = {
-        "kakao.client_id=test_client_id"
+        "kakao.client_id=test_client_id",
+        "kakao.redirect_uri=test_uri"
 })
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class E2EProductTest {
