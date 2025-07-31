@@ -1,6 +1,7 @@
 package gift.product.controller;
 
 
+import gift.product.dto.request.OptionRequestDto;
 import gift.product.dto.request.ProductCreateRequestDto;
 import gift.product.dto.request.ProductRequestDto;
 import gift.product.dto.response.ProductResponseDto;
@@ -15,6 +16,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.validation.BindingResult;
 import jakarta.validation.Valid;
+
+import java.util.ArrayList;
 
 @Controller
 @RequestMapping("/admin/products")
@@ -40,8 +43,13 @@ public class ProductAdminController {
 
     @GetMapping("/add")
     public String showAddForm(Model model){
-        model.addAttribute("product",
-                ProductFormDto.emptyForm());
+        ProductCreateRequestDto product = new ProductCreateRequestDto(
+                "", 0L, "", false, new ArrayList<>()
+        );
+
+        product.optionRequestDtoList().add(new OptionRequestDto("비어있는 옵션", 1));
+
+        model.addAttribute("product", product);
 
         return "admin/add-form";
     }

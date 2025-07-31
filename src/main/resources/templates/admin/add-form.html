@@ -39,10 +39,8 @@
   <div id="options-container">
     <div class="option-item">
       <label>옵션 1:</label><br>
-      <input type="text" th:field="*{optionRequestDtoList[0].name}" placeholder="옵션명 (예: 색상: 레드)" size="30">
-      <input type="number" th:field="*{optionRequestDtoList[0].quantity}" placeholder="수량">
-      <div style="color: red;" th:if="${#fields.hasErrors('optionRequestDtoList[0].name')}" th:errors="*{optionRequestDtoList[0].name}"></div>
-      <div style="color: red;" th:if="${#fields.hasErrors('optionRequestDtoList[0].quantity')}" th:errors="*{optionRequestDtoList[0].quantity}"></div>
+      <input type="text" th:name="|optionRequestDtoList[0].name|" th:value="*{optionRequestDtoList[0].name}" placeholder="옵션명" size="30">
+      <input type="number" th:name="|optionRequestDtoList[0].quantity|" th:value="*{optionRequestDtoList[0].quantity}" placeholder="수량">
     </div>
   </div>
   <div style="color: red;" th:if="${#fields.hasErrors('optionRequestDtoList')}" th:errors="*{optionRequestDtoList}"></div>
@@ -57,7 +55,6 @@
 <script>
   document.getElementById('add-option-btn').addEventListener('click', function() {
     const optionsContainer = document.getElementById('options-container');
-
     const newIndex = optionsContainer.getElementsByClassName('option-item').length;
 
     const newOptionDiv = document.createElement('div');
@@ -66,11 +63,10 @@
 
     newOptionDiv.innerHTML = `
             <label>옵션 ${newIndex + 1}:</label><br>
-            <input type="text" name="optionRequestDtoList[${newIndex}].name" placeholder="옵션명 (예: 사이즈: L)" size="30">
+            <input type="text" name="optionRequestDtoList[${newIndex}].name" placeholder="옵션명" size="30">
             <input type="number" name="optionRequestDtoList[${newIndex}].quantity" placeholder="수량">
             <button type="button" class="remove-option-btn" style="margin-left: 5px;">삭제</button>
         `;
-
     optionsContainer.appendChild(newOptionDiv);
   });
 
