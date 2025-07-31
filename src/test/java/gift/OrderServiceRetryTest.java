@@ -32,7 +32,8 @@ import static org.mockito.Mockito.*;
 
 @SpringBootTest
 @TestPropertySource(properties = {
-        "kakao.client_id=test_client_id"
+        "kakao.client_id=test_client_id",
+        "kakao.redirect_uri=test_uri"
 })
 @EnableRetry
 public class OrderServiceRetryTest {

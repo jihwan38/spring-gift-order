@@ -11,6 +11,7 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.web.client.RestClient;
 
@@ -19,6 +20,10 @@ import java.util.Map;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @Sql("/test.sql")
+@TestPropertySource(properties = {
+        "kakao.client_id=test_client_id",
+        "kakao.redirect_uri=test_uri"
+})
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class MemberAuthControllerTest {
     @LocalServerPort
