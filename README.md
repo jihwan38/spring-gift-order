@@ -50,5 +50,6 @@
 - [x] KakaoMessageService에 대한 테스트 추가
 ## 3단계 - 배포하기
 ### 기능 목록
--[x] 배포를 위해 redirect_uri 를 환경변수로 설정
+- [x] 배포를 위해 redirect_uri 를 환경변수로 설정
+- [x] CORS 설정 추가(`MainWebConfig`)
 
