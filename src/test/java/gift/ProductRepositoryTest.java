@@ -49,6 +49,7 @@ public class ProductRepositoryTest {
 
     @Test
     void 모든_상품조회(){
+       productRepository.deleteAll();
        productRepository.save(new Product("상품1", 1000L, "http://image.url", null));
        productRepository.save(new Product("상품2", 2000L, "http://image.url", null));
        productRepository.save(new Product("상품3", 3000L, "http://image.url", null));
