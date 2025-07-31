@@ -30,6 +30,6 @@ public class LoginPageController {
 
         model.addAttribute("location", location);
 
-        return "/kakao/login";
+        return "kakao/login";
     }
 }
