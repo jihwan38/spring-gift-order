@@ -1,8 +1,8 @@
 INSERT INTO product (name, price, image_url, is_kakao_approved_by_md)
 VALUES
-    ('한우300g', 110000, 'https://gwchild745.firstmall.kr/data/goods/1/2020/12/3_tmp_94fdc57a45d832cde487fb6b217e1b810344large.jpg', false),
-    ('텀블러', 50000, 'https://i.namu.wiki/i/ErhzrRljjqaG0FLsqz0i0S6jAgBLDeV-_az6Dj5MFR_lLFXu8-eRdEFLuuyfDVQm-yLXBb0odSOycvjqwqIiauUYL3XPSy-AG-1u9m6vgXj7qHMsil3ofNME7qJpjns_Vmkxofk7WvWBTwCc-zhpvQ.webp', false),
-    ('립스틱', 50000, 'https://i.namu.wiki/i/0GQWD4DtVb4MCjTzYV3lvvFjQE2J05KIoU2-5TPX1Zvq3TXum5D1vYcBkVJndm0YrUntKAwNLRw-qgJ2gtD_Tic8zHCnbTEX5-OEUoiVQ_p_-hS9uD0S8zDak7jcwNtvPvqqjhjRT_NbvPMGt-6HaA.webp', true),
+    ('한우300g', 110000, 'https://i.namu.wiki/i/AkDeSVy9vgABeg6qttN9zAEgQpUGPR4gjkA8ScRTmxySNMwY-SsoJUqTeBdpj52nvwyBng1zPo2k2BPUAoo3KMwNZpr3daNB_ip1XEWwyfxZDko-VYVnCXvbX717Bh_gQ_L4mUMZID-JA86YKo7WUw.webp', false),
+    ('텀블러', 50000, 'https://i.namu.wiki/i/7mqMgl46Xw3lS_-cZJEyTIQe6HIZKE6Ewr_Xu1VRe-NMeubfqV6wd0GSKQuO6TIvkPyvaDnvisYuiE0NrubKgZg8PHJhB6SpvBb4LbiAGNvce2osT2s1Bs1Cm1mO7AFNbOZrhJ-PX_JVfAwypH4EIw.webp', false),
+    ('립스틱', 50000, 'https://i.namu.wiki/i/iBDBIhjjk0QbffTYOU3y-YDOQUbrBgtllM-PTOHHytzMM98RPvjR86g24f-hINWio2ml4sfCCv7GXhedD67OMhzdonxShT2zvviiTtwy1XdO35evNCffD1mTnZFdflNbLeIaIlMYlb4j8PR8Y-1HJg.webp', true),
     ('향수', 35000, 'https://image.oliveyoung.co.kr/cfimages/cf-goods/uploads/images/thumbnails/10/0000/0020/A00000020498534ko.jpg?qt=80', false);
 
 INSERT INTO option (name, quantity, product_id)
