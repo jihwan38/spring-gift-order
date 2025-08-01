@@ -6,6 +6,7 @@ import gift.product.dto.request.ProductRequestDto;
 import gift.product.dto.response.ProductResponseDto;
 import gift.product.entity.Product;
 import gift.exception.ProductNotFoundException;
+import gift.product.repository.OptionRepository;
 import gift.product.repository.ProductRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,9 +17,11 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class ProductService {
     private final ProductRepository productRepository;
+    private final OptionRepository optionRepository;
 
-    public ProductService(ProductRepository productRepository){
+    public ProductService(ProductRepository productRepository, OptionRepository optionRepository){
         this.productRepository = productRepository;
+        this.optionRepository = optionRepository;
     }
 
     public ProductResponseDto addProduct(ProductCreateRequestDto requestDto){
@@ -70,11 +73,12 @@ public class ProductService {
     }
 
     public void deleteProduct(Long id) {
-        if(!productRepository.existsById(id)){
-            throw new ProductNotFoundException(id);
-        }
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new ProductNotFoundException(id));
 
-        productRepository.deleteById(id);
+        optionRepository.deleteByProductId(id);
+
+        productRepository.delete(product);
     }
 }
 
