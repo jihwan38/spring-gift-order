@@ -9,12 +9,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestPropertySource;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @TestPropertySource(properties = "spring.sql.init.mode=never")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @DataJpaTest
 public class ProductRepositoryTest {
     @Autowired
@@ -49,7 +51,6 @@ public class ProductRepositoryTest {
 
     @Test
     void 모든_상품조회(){
-       productRepository.deleteAll();
        productRepository.save(new Product("상품1", 1000L, "http://image.url", null));
        productRepository.save(new Product("상품2", 2000L, "http://image.url", null));
        productRepository.save(new Product("상품3", 3000L, "http://image.url", null));
