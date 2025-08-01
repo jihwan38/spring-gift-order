@@ -3,7 +3,7 @@
 PROJECT_ROOT=$(cd -- "$(dirname -- "$0")" && pwd)
 
 BUILD_PATH="$PROJECT_ROOT/build/libs"
-JAR_NAME=$(ls -t "$BUILD_PATH" | grep '\.jar$' | head -n 1)
+JAR_NAME=$(ls -t "$BUILD_PATH" | grep '\.jar$' | grep -v 'plain' | head -n 1)
 JAR_PATH="$BUILD_PATH/$JAR_NAME"
 
 KAKAO_CLIENT_ID="카카오 클라이언트 ID 입력"
